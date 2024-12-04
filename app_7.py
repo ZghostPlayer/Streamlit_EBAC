@@ -9,7 +9,7 @@ from io import BytesIO
 # Configuração inicial da página
 st.set_page_config(
     page_title='Telemarketing Analysis',
-    page_icon='../img/telmarketing_icon.png',
+    page_icon='telmarketing_icon.png',
     layout="wide",
     initial_sidebar_state='expanded'
 )
@@ -53,7 +53,7 @@ def main():
     
     # Apresentar a imagem na barra lateral
     try:
-        image = Image.open("../img/Bank-Branding.jpg")
+        image = Image.open("Bank-Branding.jpg")
         st.sidebar.image(image)
     except FileNotFoundError:
         st.sidebar.warning("Imagem não encontrada!")
@@ -132,24 +132,23 @@ def main():
         st.markdown("---")
 
         # Gráficos
-        fig, ax = plt.subplots(1, 2, figsize=(10, 5))
+        if graph_type == 'Barras':
+            st.write("### Gráficos de Barras")
+            fig, ax = plt.subplots(1, 2, figsize=(10, 5))
 
-        # Dados brutos
-        bank_raw_target_perc = bank_raw['y'].value_counts(normalize=True).mul(100).reset_index()
-        bank_raw_target_perc.columns = ['y', 'proportion']
-        sns.barplot(
-            x='y',
-            y='proportion',
-            data=bank_raw_target_perc,
-            ax=ax[0],
-            palette={'no': 'blue', 'yes': 'orange'}
-        )
-        for container in ax[0].containers:
-            ax[0].bar_label(container)
-        ax[0].set_title('Dados Brutos', fontweight="bold")
+            # Dados brutos
+            bank_raw_target_perc = bank_raw['y'].value_counts(normalize=True).mul(100).reset_index()
+            bank_raw_target_perc.columns = ['y', 'proportion']
+            sns.barplot(
+                x='y',
+                y='proportion',
+                data=bank_raw_target_perc,
+                ax=ax[0],
+                palette={'no': 'blue', 'yes': 'orange'}
+            )
+            ax[0].set_title('Dados Brutos')
 
-        # Dados filtrados
-        try:
+            # Dados filtrados
             bank_target_perc = bank['y'].value_counts(normalize=True).mul(100).reset_index()
             bank_target_perc.columns = ['y', 'proportion']
             sns.barplot(
@@ -159,13 +158,35 @@ def main():
                 ax=ax[1],
                 palette={'no': 'blue', 'yes': 'orange'}
             )
-            for container in ax[1].containers:
-                ax[1].bar_label(container)
-            ax[1].set_title('Dados Filtrados', fontweight="bold")
-        except KeyError:
-            st.error("Erro ao gerar o gráfico dos dados filtrados.")
+            ax[1].set_title('Dados Filtrados')
 
-        st.pyplot(fig)
+            st.pyplot(fig)
+        
+        elif graph_type == 'Pizza':
+            st.write("### Gráficos de Pizza")
+            fig, ax = plt.subplots(1, 2, figsize=(10, 5))
+
+            # Dados brutos
+            bank_raw_target_perc = bank_raw['y'].value_counts(normalize=True).mul(100)
+            ax[0].pie(
+                bank_raw_target_perc,
+                labels=bank_raw_target_perc.index,
+                autopct='%1.1f%%',
+                colors=['blue', 'orange']
+            )
+            ax[0].set_title('Dados Brutos')
+
+            # Dados filtrados
+            bank_target_perc = bank['y'].value_counts(normalize=True).mul(100)
+            ax[1].pie(
+                bank_target_perc,
+                labels=bank_target_perc.index,
+                autopct='%1.1f%%',
+                colors=['blue', 'orange']
+            )
+            ax[1].set_title('Dados Filtrados')
+
+            st.pyplot(fig)
 
 if __name__ == '__main__':
     main()
