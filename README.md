@@ -44,8 +44,5 @@ Envie um arquivo .csv ou .xlsx contendo informações de campanhas de marketing,
 - Gráficos de Barras: Visualize a proporção de resultados (sim/não) antes e depois de aplicar os filtros.
 - Gráficos de Pizza: Explore a distribuição de categorias selecionadas.
 
-**Download**
-Baixe os dados filtrados como um arquivo Excel para análises futuras.
-
-🖼 Layout do Aplicativo
-<img src="https://user-images.githubusercontent.com/exemplo/layout.png" alt="Tela do Aplicativo" width="600">
+**Download:**
+- Baixe os dados filtrados como um arquivo Excel para análises futuras.
